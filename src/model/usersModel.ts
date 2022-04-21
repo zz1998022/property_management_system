@@ -11,8 +11,8 @@ export function addUsers(user: Array<UserInter>) {
   console.log(user);
   // 执行查询
   return db.query(
-    "insert into smart_users(username,`password`,email) values(?,?,?)",
-    user
+    "insert into smart_users(username,`password`,email,createdAt) values(?,?,?,?)",
+    [...user, new Date().toLocaleString()]
   );
 }
 // 查找用户

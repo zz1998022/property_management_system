@@ -1,11 +1,9 @@
 import * as Router from "koa-router";
-import { DB } from "../config/mysql";
 import * as jwt from "jwt-simple";
 import { checkLogin, checkUser } from "../hooks/checkUser";
 import { addUsers, findUsers } from "../model/usersModel";
 import { hasUsers } from "../hooks/hasUsers";
 
-const db = new DB();
 //#region 登录
 export async function usersLogin(ctx: Router.RouterContext) {
   // 获取账号密码
@@ -20,7 +18,6 @@ export async function usersLogin(ctx: Router.RouterContext) {
   }
   // 判断账号密码是否正确
   return findUsers(username).then((data) => {
-    console.log(111);
     if (data.length === 0) {
       return (ctx.body = {
         code: -1,
@@ -33,18 +30,25 @@ export async function usersLogin(ctx: Router.RouterContext) {
         msg: "密码错误",
       });
     }
+    // 获取密钥
+    const secret = process.env.JWT_SECRET;
     // 生成token
     const token = jwt.encode(
       {
         username: data[0].username,
         password: data[0].password,
       },
-      "secret"
+      secret
     );
     ctx.body = {
       code: 200,
       msg: "登录成功",
-      token: token,
+      profile: {
+        username: data[0].username,
+        email: data[0].email,
+        avatar: data[0].avatar,
+        token,
+      },
     };
   });
 }
@@ -61,6 +65,7 @@ export async function userRegister(ctx: Router.RouterContext) {
     return (ctx.body = {
       code: -1,
       msg: "用户已存在",
+      success: false,
     });
   }
   if (result.error) {

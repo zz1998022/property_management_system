@@ -1,6 +1,5 @@
 import { GenerateRouter } from "../utils/GenerateRouter";
 import { userRegister, usersLogin } from "../controller/usersControl";
-import * as koaBody from "koa-body";
 
 const { router } = GenerateRouter("/users");
 

@@ -1,5 +1,11 @@
 import Router from "koa-router";
-import { findCommunityName } from "../model/communityModel";
+import {
+  findCommunityAllList,
+  findCommunityDetail,
+  findCommunityName,
+  addCommunityList as addCommunityListModel,
+} from "../model/communityModel";
+import { CommunityAll } from "./../@types/communityInter";
 
 export const getCommunityName = async (ctx: Router.RouterContext) => {
   // 获取小区信息接口
@@ -20,4 +26,97 @@ export const getCommunityName = async (ctx: Router.RouterContext) => {
         success: false,
       };
     });
+};
+
+// 获取小区详情信息
+export const getCommunityDetail = async (ctx: Router.RouterContext) => {
+  // 获取参数
+  const { code } = ctx.params as { code: string };
+  // 获取小区详情信息
+  await findCommunityDetail(code)
+    .then((res) => {
+      ctx.body = {
+        code: 200,
+        success: true,
+        data: res[0],
+        message: "数据获取成功",
+      };
+    })
+    .catch((err) => {
+      ctx.body = {
+        code: 400,
+        success: false,
+        data: [],
+        message: "查询出错，联系管理员",
+      };
+    });
+};
+
+// 获取小区列表
+export const getCommunityList = async (ctx: Router.RouterContext) => {
+  // 获取小区列表
+  await findCommunityAllList()
+    .then((result) => {
+      ctx.body = {
+        code: 200,
+        success: true,
+        message: "数据获取成功",
+        data: result,
+      };
+    })
+    .catch((err) => {
+      ctx.body = {
+        code: 400,
+        success: false,
+        message: "数据获取失败，联系管理员",
+        data: null,
+      };
+    });
+};
+
+// 添加小区
+export const addCommunityList = async (ctx: Router.RouterContext) => {
+  let params: CommunityAll = {
+    code: null,
+    name: null,
+    introduction: null,
+    thumb: null,
+    address: null,
+    area: null,
+    developer: null,
+    estate: null,
+    greening_rate: null,
+    total_building: null,
+    total_owner: null,
+    create_time: null,
+    update_time: null,
+  };
+  // 合并对象
+  params = { ...params, ...ctx.request.body };
+  const forgetParams: Array<string> = ["introduction", "thumb", "update_time"];
+  let flag = false;
+  // 遍历对象
+  for (const k in params) {
+    console.log(params[k]);
+    // 判断是否缺少参数
+    if (params[k] === null && !forgetParams.includes(k)) {
+      flag = true;
+    }
+  }
+  // 判断是否缺少参数
+  if (flag) {
+    ctx.body = {
+      code: 400,
+      message: "缺少参数,请检查",
+      data: null,
+    };
+  } else {
+    addCommunityListModel({ ...params })
+      .then((results) => {
+        console.log(results);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 };

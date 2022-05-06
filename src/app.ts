@@ -5,6 +5,7 @@ import * as path from "path";
 import * as koaJwt from "koa-jwt";
 import * as bodyParser from "koa-bodyparser";
 import * as cors from "koa2-cors";
+import * as KoaStatic from "koa-static";
 
 // 配置环境变量
 dotenv.config({
@@ -19,17 +20,19 @@ const tokenExpiresTime = 1000 * 60 * 60 * 24 * 7;
 import usersRouter from "./router/usersRouter";
 // 小区路由
 import communityRouter from "./router/communityRouter";
+// 图片上传路由
+import uploaderRouter from "./router/uploaderRouter";
 
 const app = new Koa();
 const router = new Router();
 
+app.use(KoaStatic(__dirname + "/public"));
 app.use(bodyParser());
 app.use(cors());
 
 // 进行拦截
 app.use(function (ctx, next) {
   return next().catch((err) => {
-    console.log(ctx.request.header);
     if (401 == err.status) {
       ctx.status = 401;
       ctx.body = "Protected resource, use Authorization header to get access\n";
@@ -46,10 +49,13 @@ app.use(
 // 挂载路由
 app.use(usersRouter.routes());
 app.use(communityRouter.routes());
+app.use(uploaderRouter.routes());
 
 app.use(router.routes());
 app.use(router.allowedMethods());
 
-app.listen(3000);
+const port = process.env.PORT;
 
-console.log("server running on port 3000");
+app.listen(port || 3000);
+
+console.log(`server running on port ${port}`);

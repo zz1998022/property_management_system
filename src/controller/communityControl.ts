@@ -4,6 +4,9 @@ import {
   findCommunityDetail,
   findCommunityName,
   addCommunityList as addCommunityListModel,
+  removeCommunityList,
+  findCommunityOneList,
+  updateCommunityOne,
 } from "../model/communityModel";
 import { CommunityAll } from "./../@types/communityInter";
 
@@ -74,10 +77,56 @@ export const getCommunityList = async (ctx: Router.RouterContext) => {
     });
 };
 
+// 获取单个小区
+export const getCommunityOneList = async (ctx: Router.RouterContext) => {
+  // 获取参数
+  const { id } = ctx.params as { id: number | unknown };
+  // 获取单个小区
+  await findCommunityOneList(id as number)
+    .then((res) => {
+      ctx.body = {
+        code: 200,
+        success: true,
+        message: "数据获取成功",
+        data: res[0],
+      };
+    })
+    .catch(() => {
+      ctx.body = {
+        code: 400,
+        message: "数据获取失败，联系管理员",
+        success: false,
+        data: null,
+      };
+    });
+};
+
+// 更新单个小区
+export const updateCommunityList = async (ctx: Router.RouterContext) => {
+  const params = ctx.request.body as CommunityAll;
+  console.log(params.id);
+  await updateCommunityOne(params)
+    .then(() => {
+      ctx.body = {
+        code: 200,
+        success: true,
+        message: "数据更新成功",
+        data: null,
+      };
+    })
+    .catch((err) => {
+      ctx.body = {
+        code: 400,
+        success: false,
+        message: "数据更新失败，联系管理员",
+        data: null,
+      };
+    });
+};
+
 // 添加小区
 export const addCommunityList = async (ctx: Router.RouterContext) => {
   let params: CommunityAll = {
-    code: null,
     name: null,
     introduction: null,
     thumb: null,
@@ -88,7 +137,6 @@ export const addCommunityList = async (ctx: Router.RouterContext) => {
     greening_rate: null,
     total_building: null,
     total_owner: null,
-    create_time: null,
     update_time: null,
   };
   // 合并对象
@@ -111,12 +159,43 @@ export const addCommunityList = async (ctx: Router.RouterContext) => {
       data: null,
     };
   } else {
-    addCommunityListModel({ ...params })
-      .then((results) => {
-        console.log(results);
+    await addCommunityListModel({ ...params })
+      .then(() => {
+        // 响应
+        ctx.body = {
+          code: 200,
+          message: "添加成功",
+          data: null,
+        };
       })
       .catch((err) => {
-        console.log(err);
+        ctx.body = {
+          code: 400,
+          message: err,
+          data: null,
+        };
       });
   }
+};
+
+// 删除小区
+export const deleteCommunityList = async (ctx: Router.RouterContext) => {
+  // 获取参数
+  const params = ctx.request.body as Array<number>;
+  // 进行删除操作
+  await removeCommunityList(params)
+    .then((res) => {
+      ctx.body = {
+        code: 200,
+        message: "数据删除成功",
+        data: null,
+      };
+    })
+    .catch((err) => {
+      ctx.body = {
+        code: 400,
+        message: "数据删除失败",
+        data: null,
+      };
+    });
 };

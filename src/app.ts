@@ -3,7 +3,7 @@ import * as Router from "koa-router";
 import * as dotenv from "dotenv";
 import * as path from "path";
 import * as koaJwt from "koa-jwt";
-import * as bodyParser from "koa-bodyparser";
+import * as body from "koa-body";
 import * as cors from "koa2-cors";
 import * as KoaStatic from "koa-static";
 
@@ -27,7 +27,18 @@ const app = new Koa();
 const router = new Router();
 
 app.use(KoaStatic(__dirname + "/public"));
-app.use(bodyParser());
+app.use(
+  body({
+    multipart: true,
+    strict: false,
+    formidable: {
+      // 上传存放的路劲
+      uploadDir: path.join(__dirname, "./public/uploads"),
+      // 保持后缀名\
+      keepExtensions: true,
+    },
+  })
+);
 app.use(cors());
 
 // 进行拦截

@@ -20,7 +20,7 @@ export interface CommunityAll {
   /**
    * 小区编号，建议CM开头
    */
-  code: string;
+  code?: string;
   /**
    * 小区名称
    */
@@ -64,7 +64,7 @@ export interface CommunityAll {
   /**
    * 创建时间
    */
-  create_time: number;
+  create_time?: number;
   /**
    * 修改时间
    */

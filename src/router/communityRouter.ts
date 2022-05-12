@@ -1,9 +1,14 @@
-import { getCommunityList } from "./../controller/communityControl";
+import {
+  deleteCommunityList,
+  getCommunityList,
+} from "./../controller/communityControl";
 import { GenerateRouter } from "../utils/GenerateRouter";
 import {
   getCommunityName,
   getCommunityDetail,
   addCommunityList,
+  getCommunityOneList,
+  updateCommunityList,
 } from "../controller/communityControl";
 
 const { router } = GenerateRouter("/community");
@@ -14,7 +19,13 @@ router.get("/name", getCommunityName);
 router.post("/detail/:code", getCommunityDetail);
 // 获取小区列表
 router.get("/list", getCommunityList);
+// 获取单个小区列表
+router.get("/list/:id", getCommunityOneList);
+// 更新单个小区
+router.post("/list", updateCommunityList);
 // 添加小区列表
 router.put("/list", addCommunityList);
+// 删除小区列表
+router.delete("/list", deleteCommunityList);
 
 export default router;

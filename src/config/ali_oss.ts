@@ -7,10 +7,3 @@ export const oss = new OSS({
   region: process.env.region,
   bucket: process.env.bucket,
 });
-
-// export const oss = new OSS({
-//   accessKeyId: "LTAIPu9xEPVoPbPj",
-//   accessKeySecret: "OK06Yzrdo7sZ3JEbSe57qlmXIatZi9",
-//   region: "oss-us-west-1",
-//   bucket: "lemon-usa",
-// });

@@ -22,6 +22,16 @@ import usersRouter from "./router/usersRouter";
 import communityRouter from "./router/communityRouter";
 // 图片上传路由
 import uploaderRouter from "./router/uploaderRouter";
+// 栋数路由
+import build from "./router/buildRouter";
+// 房产路由
+import house from "./router/houseRouter";
+// 人员管理路由
+import people from "./router/peopleRouter";
+// 车辆管理路由
+import vehicle from "./router/vehicleRouter";
+// 宠物路由
+import pet from "./router/petRouter";
 
 const app = new Koa();
 const router = new Router();
@@ -61,6 +71,11 @@ app.use(
 app.use(usersRouter.routes());
 app.use(communityRouter.routes());
 app.use(uploaderRouter.routes());
+app.use(build.routes());
+app.use(house.routes());
+app.use(people.routes());
+app.use(vehicle.routes());
+app.use(pet.routes());
 
 app.use(router.routes());
 app.use(router.allowedMethods());

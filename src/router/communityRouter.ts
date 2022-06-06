@@ -8,6 +8,7 @@ import {
   getCommunityDetail,
   addCommunityList,
   getCommunityOneList,
+  getCommunitySmallList,
   updateCommunityList,
 } from "../controller/communityControl";
 
@@ -19,6 +20,8 @@ router.get("/name", getCommunityName);
 router.post("/detail/:code", getCommunityDetail);
 // 获取小区列表
 router.get("/list", getCommunityList);
+// 获取小区精简列表
+router.get("/list_small", getCommunitySmallList);
 // 获取单个小区列表
 router.get("/list/:id", getCommunityOneList);
 // 更新单个小区

@@ -1,6 +1,6 @@
-import { CommunityAll } from "./../@types/communityInter";
+import { CommunityAll } from "../types/communityInter";
 import { DB } from "../config/mysql";
-import { communityDetail } from "../@types/communityInter";
+import { communityDetail } from "../types/communityInter";
 import generateCode from "../hooks/generateCode";
 import * as dayjs from "dayjs";
 
@@ -27,6 +27,13 @@ export function findCommunityAllList(): Promise<Array<CommunityAll>> {
 // 获取单个小区列表
 export function findCommunityOneList(id: number): Promise<Array<CommunityAll>> {
   return db.query(`select * from smart_community where id = ?;`, [id]);
+}
+
+// 获取精简小区列表
+export function findCommunitySmallList(): Promise<
+  Array<{ id: number; code: string; name: string }>
+> {
+  return db.query("select id,`code`,`name` from smart_community;");
 }
 
 // 更新单个小区

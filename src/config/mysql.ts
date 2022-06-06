@@ -10,6 +10,12 @@ export class DB {
     });
   }
 
+  /**
+   *
+   * @param sql string sql语句
+   * @param args Array<any> 参数
+   * @returns Prmoise
+   */
   query(sql: string, args?: Array<any>): Promise<any> {
     return new Promise((resolve, reject) => {
       this.pool().query(sql, args, (err, results) => {

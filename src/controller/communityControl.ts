@@ -6,9 +6,10 @@ import {
   addCommunityList as addCommunityListModel,
   removeCommunityList,
   findCommunityOneList,
+  findCommunitySmallList,
   updateCommunityOne,
 } from "../model/communityModel";
-import { CommunityAll } from "./../@types/communityInter";
+import { CommunityAll } from "../types/communityInter";
 
 export const getCommunityName = async (ctx: Router.RouterContext) => {
   // 获取小区信息接口
@@ -75,6 +76,27 @@ export const getCommunityList = async (ctx: Router.RouterContext) => {
         data: null,
       };
     });
+};
+
+// 获取精简小区列表
+export const getCommunitySmallList = async (ctx: Router.RouterContext) => {
+  try {
+    const res = await findCommunitySmallList();
+    ctx.body = {
+      code: 200,
+      message: "数据获取成功",
+      success: true,
+      data: res,
+    };
+  } catch (e) {
+    ctx.status = 500;
+    ctx.body = {
+      code: 500,
+      message: "服务器内部错误",
+      success: false,
+      data: null,
+    };
+  }
 };
 
 // 获取单个小区

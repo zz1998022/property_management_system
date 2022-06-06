@@ -48,6 +48,7 @@ export async function usersLogin(ctx: Router.RouterContext) {
         email: data[0].email,
         avatar: data[0].avatar,
         token,
+        id: data[0].id,
       },
     };
   });

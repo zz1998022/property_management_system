@@ -1,5 +1,5 @@
 import * as Joi from "joi";
-import { UserInter } from "../@types/userInter";
+import { UserInter } from "../types/userInter";
 
 // 创建校验规则
 const schema = Joi.object({

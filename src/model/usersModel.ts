@@ -1,5 +1,5 @@
 // 添加用户
-import { UserInter } from "../@types/userInter";
+import { UserInter } from "../types/userInter";
 import { DB } from "../config/mysql";
 
 // 实例化数据库类
